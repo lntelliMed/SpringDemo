@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:c="http://www.springframework.org/schema/c"
+	xmlns:p="http://www.springframework.org/schema/p" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-4.1.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context-4.1.xsd"
+	default-init-method="myInit" default-destroy-method="myDestroy">
+
+
+
+	<bean id="triangle" class="com.intellimed.springdemo.Triangle">
+		<!-- <property name="type" value="Equilateral" /> -->
+		<constructor-arg type="java.lang.String" index="0"
+			value="Equilateral" />
+
+		<property name="points">
+			<list>
+				<ref bean="pointA"></ref>
+				<ref bean="pointB"></ref>
+				<ref bean="pointC"></ref>
+			</list>
+
+		</property>
+
+	</bean>
+
+
+	<!-- <bean id="circle" class="com.intellimed.springdemo.Circle"> <property 
+		name="center" ref="pointA"/> </bean> -->
+
+	<bean id="pointA" class="com.intellimed.springdemo.Point">
+		<qualifier value="circleRelated" />
+		<property name="x" value="${pointA.pointX}"></property>
+		<property name="y" value="${pointA.pointY}"></property>
+	</bean>
+
+	<bean id="pointB" class="com.intellimed.springdemo.Point">
+		<property name="x" value="0"></property>
+		<property name="y" value="20"></property>
+	</bean>
+
+	<bean id="pointC" class="com.intellimed.springdemo.Point">
+		<property name="x" value="-20"></property>
+		<property name="y" value="0"></property>
+	</bean>
+
+	<bean class="com.intellimed.springdemo.DisplayNameBeanPostProcessor" />
+	<bean class="com.intellimed.springdemo.MyBeanFactoryPostProcessor" />
+	<bean
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations" value="pointconfig.properties" />
+	</bean>
+
+	<!-- <bean -->
+	<!-- class="org.springframework.beans.factory.annotation.RequiredAnnotationBeanPostProcessor" 
+		/> -->
+	<!-- <bean -->
+	<!-- class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor" 
+		/> -->
+
+
+	<bean id="messageSource"
+		class="org.springframework.context.support.ResourceBundleMessageSource">
+		<property name="basenames">
+			<list>
+				<value>mymessages</value>
+			</list>
+		</property>
+	</bean>
+	<context:annotation-config />
+	<context:component-scan base-package="com.intellimed.springdemo"></context:component-scan>
+
+
+</beans>
